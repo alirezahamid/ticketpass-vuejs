@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import EventModule from './event/index'
+import AuthModule from './auth/index'
 
 export default createStore({
   state: {
@@ -11,6 +12,7 @@ export default createStore({
   actions: {
   },
   modules: {
-    event: EventModule
+    event: EventModule,
+    auth: AuthModule
   }
 })
