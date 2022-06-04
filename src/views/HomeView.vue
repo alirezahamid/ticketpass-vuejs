@@ -10,8 +10,8 @@
               <a href="#">
                   <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">Event Name {{event.name}}</h5>
               </a>
-              <p class="mb-3 font-normal text-gray-700">
-                Event Date From - To
+              <p class="mb-3 font-normal w-9/12 text-gray-700 mx-auto">
+                {{ FormatedDate(event.startDate)}} - {{ FormatedDate(event.endDate)}}
               </p>
               <router-link :to="`/event/${event.id}`">
                 <span class="inline-flex items-center py-2 px-3 text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/20 font-medium rounded-lg text-sm text-center mr-2 mb-2">
@@ -29,6 +29,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import moment from 'moment'
 
 export default {
   name: 'HomeView',
@@ -39,15 +40,20 @@ export default {
     return {
     }
   },
+
   computed: {
     ...mapGetters({
       events: 'event/eventsData'
     })
+
   },
   methods: {
     ...mapActions({
       getEvents: 'event/getEvents'
-    })
+    }),
+    FormatedDate (date) {
+      return moment(date).format('DD/MM/YYYY, h:mm a')
+    }
   },
   created () {
     this.getEvents(1)

@@ -1,4 +1,4 @@
-import { fetchEvents } from '@/repository/event/index'
+import { fetchEvent, fetchEvents } from '@/repository/event/index'
 
 export default {
   namespaced: true,
@@ -14,6 +14,9 @@ export default {
   getters: {
     eventsData: (state) => {
       return state.eventsArray.data
+    },
+    eventData: (state) => {
+      return state.event.data
     }
   },
   mutations: {
@@ -32,6 +35,15 @@ export default {
       try {
         const data = await fetchEvents(page)
         context.commit('SET_EVENTS', data.data)
+      } catch (error) {
+        context.commit('SET_ERROR', { error: true, blueprint: error })
+        console.log(error)
+      }
+    },
+    async getSingleEvent (context, id) {
+      try {
+        const data = await fetchEvent(id)
+        context.commit('SET_EVENT', data.data)
       } catch (error) {
         context.commit('SET_ERROR', { error: true, blueprint: error })
         console.log(error)
