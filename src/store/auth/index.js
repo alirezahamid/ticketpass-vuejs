@@ -1,5 +1,6 @@
 import { login } from '@/repository/auth'
-import { setToken } from '@/service/LocalStorageService'
+import { clearToken, setToken } from '@/service/LocalStorageService'
+import router from '@/router'
 
 export default {
   namespaced: true,
@@ -12,6 +13,9 @@ export default {
     }
   },
   getters: {
+    errorData: (state) => {
+      return state.error
+    }
   },
   mutations: {
     SET_TOKENS (state, payload) {
@@ -28,11 +32,15 @@ export default {
         const { data } = await login(credentials)
         setToken({ access_token: data.access_token, refresh_token: data.refresh_token })
         context.commit('SET_TOKENS', data)
+        router.push('/')
       } catch (error) {
-        context.commit('SET_ERROR', { error: true, blueprint: error })
+        context.commit('SET_ERROR', { raiseError: true, blueprint: error })
         console.log(error)
       }
+    },
+    async callLogout (context) {
+      clearToken()
+      router.push('/login')
     }
-
   }
 }

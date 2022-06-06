@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'LoginView',
   components: {
@@ -36,6 +36,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters({
+      error: 'auth/errorData'
+    })
+  },
   methods: {
     ...mapActions({
       login: 'auth/callLogin'
@@ -43,7 +48,9 @@ export default {
 
     onLogin () {
       this.login(this.credentials)
-      this.$router.push('/')
+      if (this.error.raiseError) {
+        console.log(this.error.blueprint)
+      }
     }
   }
 }

@@ -1,5 +1,17 @@
+import { getAccessToken, getRefreshToken } from '@/service/LocalStorageService'
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+
+const guardMyroute = (to, from, next) => {
+  let isAuthenticated = false
+  if (getAccessToken() && getRefreshToken()
+  ) { isAuthenticated = true } else { isAuthenticated = false }
+  if (isAuthenticated) {
+    next()
+  } else {
+    next('/login')
+  }
+}
 
 const routes = [
   {
@@ -10,26 +22,19 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/LoginView.vue')
+    component: () => import('../views/LoginView.vue')
   },
   {
     path: '/create-event',
     name: 'createEvent',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/CreateEventView.vue')
+    beforeEnter: guardMyroute,
+
+    component: () => import('../views/CreateEventView.vue')
   },
   {
     path: '/event/:id',
     name: 'event',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/EventDetailsView.vue')
+    component: () => import('../views/EventDetailsView.vue')
   }
 ]
 
