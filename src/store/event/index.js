@@ -1,4 +1,4 @@
-import { fetchEvent, fetchEvents } from '@/repository/event/index'
+import { fetchEvent, fetchEvents, createEvent } from '@/repository/event/index'
 
 export default {
   namespaced: true,
@@ -44,6 +44,14 @@ export default {
       try {
         const data = await fetchEvent(id)
         context.commit('SET_EVENT', data.data)
+      } catch (error) {
+        context.commit('SET_ERROR', { error: true, blueprint: error })
+        console.log(error)
+      }
+    },
+    async createEvent (context, body) {
+      try {
+        await createEvent(body)
       } catch (error) {
         context.commit('SET_ERROR', { error: true, blueprint: error })
         console.log(error)

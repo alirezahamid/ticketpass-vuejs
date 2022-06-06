@@ -2,7 +2,7 @@
   <div class="home py-4">
     <div class="container w-11/12 sm:w-full mx-auto">
       <div class="home__items grid sm:grid-cols-2 md:grid-cols-4 gap-4" >
-        <div v-for="(event,index) in events" :key='index' class="home__item max-w-sm bg-white rounded-lg border border-gray-200 shadow-md">
+        <div v-for="(event,index) in events" :key='index' class="home__item flex flex-col justify-between max-w-sm bg-white rounded-lg border border-gray-200 shadow-md">
           <a href="#">
               <img class="rounded-t-lg" :src="event.image" :alt="event.name" />
           </a>
