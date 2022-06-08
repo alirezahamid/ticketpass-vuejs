@@ -15,6 +15,9 @@ export default {
     eventsData: (state) => {
       return state.eventsArray.data
     },
+    eventsMeta: (state) => {
+      return state.eventsArray.meta
+    },
     eventData: (state) => {
       return state.event.data
     }

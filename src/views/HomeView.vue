@@ -23,6 +23,19 @@
         </div>
 
      </div>
+     <nav aria-label="Page navigation example">
+        <ul class="inline-flex -space-x-px">
+          <li>
+            <a @click="previousPaginate" href="#" :class="{'cursor-not-allowed': meta.current_page === 1}" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Previous</a>
+          </li>
+          <li v-for="(page, index) in meta.last_page" :key="index">
+            <a @click="paginate(page)" href="#" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" :class='{"bg-gray-300": page === meta.current_page}'>{{page}}</a>
+          </li>
+          <li >
+            <a @click="nextPaginate" href="#" :class="{'cursor-not-allowed': meta.current_page === meta.last_page}" class="py-2 px-3  leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Next</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </template>
@@ -43,7 +56,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      events: 'event/eventsData'
+      events: 'event/eventsData',
+      meta: 'event/eventsMeta'
     })
 
   },
@@ -53,6 +67,19 @@ export default {
     }),
     FormatedDate (date) {
       return moment(date).format('DD/MM/YYYY, h:mm a')
+    },
+    paginate (page) {
+      this.getEvents(page)
+    },
+    nextPaginate () {
+      if (this.meta.current_page < this.meta.last_page) {
+        this.paginate(this.meta.current_page + 1)
+      }
+    },
+    previousPaginate () {
+      if (this.meta.current_page > 1) {
+        this.paginate(this.meta.current_page - 1)
+      }
     }
   },
   created () {
